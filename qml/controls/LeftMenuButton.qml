@@ -1,14 +1,19 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import Qt5Compat.GraphicalEffects
 
 Button {
     id: btnLeftMenu
     text: qsTr('Left Menu text')
+
+    property url btnIconSource
+
     property color colorDefault: "#5f6a82"
     property color colorMouseOver: '#cccccc'
     property color colorPressed: '#333333'
     property color activeMenuColorLeft: '#55aaff'
     property color activeMenuColorRight: '#2c313c'
+
     property int iconWidth: 18
     property int iconHeight: 18
     property bool isActive: true
@@ -62,7 +67,7 @@ Button {
         id: content
         Image {
             id: iconBtn
-            source: '../../images/svg_images/home_icon.svg'
+            source: btnIconSource
             anchors.leftMargin: 26
             anchors.left: parent.left
             sourceSize.width: iconWidth
@@ -74,12 +79,12 @@ Button {
             antialiasing: true
         }
 
-//        ColorOverlay {
-//            anchors.fill: iconBtn
-//            source: iconBtn
-//            color: 'white'
-//            antialiasing: False
-//        }
+        ColorOverlay {
+            anchors.fill: iconBtn
+            source: iconBtn
+            color: 'white'
+            antialiasing: true
+        }
 
         Text {
             color: 'white'

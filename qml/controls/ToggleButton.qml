@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 Button {
     id: btnToggle
 
+    property url btnIconSource
     property color colorDefault: '#55aaff'
     property color colorMouseOver: '#cccccc'
     property color colorPressed: '#333333'
@@ -24,11 +25,11 @@ Button {
     background: Rectangle{
         id: rectangle
         color: internal.dynamicColor
-        radius: 10
+        radius: 8
 
         Image {
             id: iconBtn
-            source: '../../images/svg_images/menu_icon.svg'
+            source: btnIconSource
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             height: 25
@@ -40,7 +41,7 @@ Button {
 //            anchors.fill: iconBtn
 //            source: iconBtn
 //            color: 'white'
-//            antialiasing: False
+//            antialiasing: True
 //        }
     }
 }

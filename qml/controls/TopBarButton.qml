@@ -1,9 +1,10 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
+import Qt5Compat.GraphicalEffects
 
 Button {
     id: btnTopBar
-
+    property url btnIconSource
     property color colorDefault: '#00a1f1'
     property color colorMouseOver: '#cccccc'
     property color colorPressed: '#333333'
@@ -23,7 +24,7 @@ Button {
 
     background: Rectangle{
         id: rectangle
-        color: "transparent"
+        color: 'transparent'
         radius: 10
 
         Image {
@@ -41,7 +42,8 @@ Button {
 //            anchors.fill: iconBtn
 //            source: iconBtn
 //            color: 'white'
-//            antialiasing: False
+//            antialiasing: true
 //        }
     }
 }
+
