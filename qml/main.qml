@@ -1,18 +1,20 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
+import Qt5Compat.GraphicalEffects
+
 import 'controls'
 
 Window {
-    id: window
+    id: mainWindow
     width: 1080
     height: 720
     visible: true
 
-    color: "#ffffff"
+    color: "#00ffffff"
     title: qsTr("NOTE Complement")
 
-
+    flags: Qt.Window | Qt.FramelessWindowHint
 
     Rectangle {
         id: appContainer
@@ -20,11 +22,7 @@ Window {
         visible: true
         color: "#2c313c"
         anchors.fill: parent
-        anchors.margins: 10
-        anchors.rightMargin: 10
-        anchors.bottomMargin: 10
-        anchors.leftMargin: 10
-        anchors.topMargin: 10
+
         transformOrigin: Item.Center
 
         Rectangle {
@@ -44,52 +42,14 @@ Window {
                 anchors.top: parent.top
                 anchors.leftMargin: 0
                 anchors.topMargin: 0
-            }
 
-            Rectangle {
-                id: topBarDescription
-                y: 46
-                height: 50
-                color: "#282c34"
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                anchors.rightMargin: 0
-                anchors.leftMargin: 70
-                anchors.bottomMargin: 0
-
-                Label {
-                    id: labelTopInfo
-                    color: "#5f6a82"
-                    text: qsTr("Tool description")
-                    anchors.fill: parent
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: 20
-                    anchors.rightMargin: 300
-                    anchors.leftMargin: 10
-                }
-
-                Label {
-                    id: labelTopInfo1
-                    color: "#5f6a82"
-                    text: qsTr("| Home")
-                    anchors.left: labelTopInfo.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    horizontalAlignment: Text.AlignRight
-                    anchors.topMargin: 0
-                    anchors.bottomMargin: 0
-                    anchors.leftMargin: 680
-                    anchors.rightMargin: 0
-                    font.pointSize: 20
-                }
+                onHoveredChanged: animationMenu.running = true
             }
 
             Rectangle {
                 id: titleBar
                 height: 50
-                color: "#ffffff"
+                color: "#2a2d31"
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
@@ -97,13 +57,21 @@ Window {
                 anchors.leftMargin: 70
                 anchors.topMargin: 0
 
+                DragHandler {
+                    onActiveChanged:
+                        if (active){
+                            mainWindow.startSystemMove()
+                        }
+                }
+
                 Image {
                     id: iconApp
-                    width: 50
+                    width: 22
+                    height: 22
                     anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    source: "qrc:/qtquickplugin/images/template_image.png"
+                    source: "../images/svg_images/icon_app_top.svg"
                     anchors.bottomMargin: 10
                     anchors.topMargin: 10
                     anchors.leftMargin: 10
@@ -115,9 +83,10 @@ Window {
                     color: "#c3cbdd"
                     text: qsTr("NOTE Complement")
                     anchors.fill: parent
-                    horizontalAlignment: Text.AlignHCenter
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
                     font.pointSize: 20
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: 50
                 }
 
                 Row {
@@ -166,6 +135,47 @@ Window {
                     }
                 }
             }
+
+            Rectangle {
+                id: topBarDescription
+                y: 46
+                height: 50
+                color: "#282c34"
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 0
+                anchors.leftMargin: 70
+                anchors.bottomMargin: 0
+
+                Label {
+                    id: labelTopInfo
+                    color: "#5f6a82"
+                    text: qsTr("Tool description")
+                    anchors.fill: parent
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pointSize: 20
+                    anchors.rightMargin: 300
+                    anchors.leftMargin: 10
+                }
+
+                Label {
+                    id: labelTopInfo1
+                    color: "#5f6a82"
+                    text: qsTr("| Home")
+                    anchors.left: labelTopInfo.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    horizontalAlignment: Text.AlignRight
+                    anchors.topMargin: 0
+                    anchors.bottomMargin: 0
+                    anchors.leftMargin: 680
+                    anchors.rightMargin: 0
+                    font.pointSize: 20
+                }
+            }
+
         }
 
         Rectangle {
@@ -188,7 +198,7 @@ Window {
 
                 opacity: 1
                 visible: true
-                color: "white"
+                color: "#2a2d31"
                 layer.enabled: true
 
                 anchors.left: parent.left
@@ -198,17 +208,64 @@ Window {
                 anchors.bottomMargin: 0
                 anchors.leftMargin: 0
 
-                Column {
-                    id: column
-                    anchors.fill: parent
-                    anchors.bottomMargin: 100
+                PropertyAnimation {
+                    id: animationMenu
+                    target: leftMenu
+                    property: 'width'
+                    to:
+                        if (leftMenu.width == 70)
+                            return 200;
+                        else return 70;
+                    duration: 500
+                    easing.type: Easing.InOutQuint
+                }
 
-                    Button {
-                        id: button
-                        width: 70
-                        height: 81
-                        text: qsTr("Button")
+                MouseArea {
+                    anchors.fill: parent
+                    onExited: {
+                        // Start the animation to collapse the menu when the mouse leaves
+                        animationMenu.start();
                     }
+                }
+
+                Column {
+                    id: columnMenu
+                    anchors.fill: parent
+                    anchors.bottomMargin: 24
+                    clip: true
+
+                    LeftMenuButton {
+                        id: btnHome
+                        width: leftMenu.width
+                        text: qsTr("Button")
+                        icon.source: "../images/svg_images/home_icon.svg"
+                    }
+
+                    LeftMenuButton {
+                        id: btnOpen
+                        width: leftMenu.width
+                        text: qsTr("Open")
+                        anchors.top: btnHome.bottom
+                        icon.source: "../images/svg_images/open_icon.svg"
+                    }
+
+                    LeftMenuButton {
+                        id: btnSave
+                        width: leftMenu.width
+                        text: qsTr("Save")
+                        anchors.top: btnOpen.bottom
+                        icon.source: "../images/svg_images/save_icon.svg"
+                        anchors.topMargin: 0
+                    }
+                }
+
+                LeftMenuButton {
+                    id: btnSettings
+                    width: leftMenu.width
+                    text: qsTr("Settings")
+                    anchors.bottom: columnMenu.bottom
+                    icon.source: "../images/svg_images/settings_icon.svg"
+                    anchors.topMargin: 0
                 }
 
 
@@ -258,5 +315,15 @@ Window {
 
     }
 
+    DropShadow {
+        anchors.fill: bg
+        horizontalOffset: 0
+        verticalOffset: 0
+        radius: 10
+        samples: 16
+        color: "#ffffff"
+        source: bg
+        z: 0
+    }
 }
 
