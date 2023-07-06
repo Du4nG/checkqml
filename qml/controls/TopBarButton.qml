@@ -4,10 +4,14 @@ import Qt5Compat.GraphicalEffects
 
 Button {
     id: btnTopBar
+    flat: true
     property url btnIconSource
-    property color colorDefault: '#2a2d31'
+    property color colorDefault: 'transparent'
     property color colorMouseOver
     property color colorPressed: '#333333'
+
+    property color colorOverlayDefault: '#606060'
+    property color colorOverlay: 'white'
 
     QtObject {
         id: internal
@@ -18,10 +22,10 @@ Button {
             else{
                 btnTopBar.hovered ? colorMouseOver : colorDefault
             }
-    }
 
-    width: 50
-    height: 50
+        property var dynamicColorOverlay:
+            btnTopBar.hovered ? colorOverlay : colorOverlayDefault
+    }
 
     background: Rectangle{
         id: bgBtn
@@ -41,7 +45,7 @@ Button {
         ColorOverlay{
             anchors.fill: iconBtn
             source: iconBtn
-            color: '#808080'
+            color: internal.dynamicColorOverlay
         }
     }
 }

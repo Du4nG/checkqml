@@ -4,17 +4,18 @@ import QtQuick.Controls 2.15
 Button {
     id: btnToggle
 
+    width: 50
+    height: 50
+
     property url btnIconSource
     property color colorDefault: "#af55aaff"
     property color colorMouseOver: '#cccccc'
     property color colorPressed: '#333333'
-    width: 50
-    height: 50
 
     QtObject {
         id: internal
         property var dynamicColor:
-            if(btnToggle.down){
+            if (btnToggle.down){
                 btnToggle.down ? colorPressed : colorDefault
             }
             else{

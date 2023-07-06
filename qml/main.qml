@@ -10,15 +10,14 @@ Window {
     width: 1080
     height: 720
     visible: true
-
     color: 'transparent'
+
     title: qsTr('QML')
 
     flags: Qt.Window | Qt.FramelessWindowHint
 
-    property string textColor: '#5f6a82'
-    property string barColor: '#2a2d31'
-
+    property color textColor: '#5f6a82'
+    property color barColor: '#2a2d31'
     property int windowStatus: 0
     property int windowMargin: 10
 
@@ -65,7 +64,7 @@ Window {
         anchors.rightMargin: windowMargin
         anchors.leftMargin: windowMargin
         anchors.bottomMargin: windowMargin
-        anchors.topMargin: windowMargin   
+        anchors.topMargin: windowMargin
         z: 1
 
         Rectangle {
@@ -81,7 +80,7 @@ Window {
                 id: topBar
                 height: 100
                 visible: true
-                color: '#1c1d20'
+                color: barColor
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top    
@@ -105,7 +104,7 @@ Window {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.rightMargin: 105
+                    anchors.rightMargin: 129
                     anchors.leftMargin: 70
                     anchors.topMargin: 0
 
@@ -144,17 +143,20 @@ Window {
 
                     Row {
                         id: row
-                        width: 105
+                        width: 129
                         height: 32
                         anchors.left: parent.right
 
                         TopBarButton {
                             id: minimizeBtn
-                            width: 35
+                            width: 43
                             anchors.left: parent.left
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
+
+                            colorMouseOver: '#66808080'
                             btnIconSource: '../../images/svg_images/minimize_icon.svg'
+
                             onClicked: {
                                 mainWindow.showMinimized()
                                 internal.restoreMargins()
@@ -163,12 +165,12 @@ Window {
 
                         TopBarButton {
                             id: maximizeBtn
-                            width: 35
+                            width: 43
                             anchors.left: minimizeBtn.right
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
 
-                            colorMouseOver: "#54402323"
+                            colorMouseOver: '#66808080'
                             btnIconSource: '../../images/svg_images/maximize_icon.svg'
 
                             onClicked: internal.maximizeRestore()
@@ -176,13 +178,13 @@ Window {
 
                         TopBarButton {
                             id: closeBtn
-                            width: 35
+                            width: 43
                             anchors.left: maximizeBtn.right
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
 
+                            colorMouseOver: '#c5083e'
                             btnIconSource: '../../images/svg_images/close_icon.svg'
-                            colorMouseOver: '#fe2c54'
 
                             onClicked: mainWindow.close()
                         }
@@ -286,7 +288,7 @@ Window {
                         anchors.right: parent.right
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 24
+                        anchors.bottomMargin: 30
                         clip: true
 
                         LeftMenuButton {
@@ -315,9 +317,12 @@ Window {
 
                     LeftMenuButton {
                         id: btnSettings
+                        x: 0
+                        y: 555
                         width: leftMenu.width
                         text: qsTr('Settings')
                         anchors.bottom: columnMenu.bottom
+                        anchors.bottomMargin: -5
                         btnIconSource: '../../images/svg_images/settings_icon.svg'
                         anchors.topMargin: 0
                     }
@@ -358,7 +363,7 @@ Window {
                         anchors.fill: parent
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
-                        font.pointSize: 13
+                        font.pointSize: 12
                     }
                 }
             }
