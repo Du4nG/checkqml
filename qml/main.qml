@@ -16,23 +16,26 @@ Window {
 
     flags: Qt.Window | Qt.FramelessWindowHint
 
+    property string textColor: '#5f6a82'
+    property string barColor: '#2a2d31'
+
     property int windowStatus: 0
     property int windowMargin: 10
 
     QtObject {
         id: internal
         function maximizeRestore(){
-            if (windowStatus === 0){
+            if (windowStatus == 0){
                 mainWindow.showMaximized()
                 windowStatus = 1
                 windowMargin = 0
-//                maximizeBtn.btnIconSource = '../../images/svg_images/restore_icon.svg'
+                maximizeBtn.btnIconSource = '../../images/svg_images/restore_icon.svg'
             }
             else{
                 mainWindow.showNormal()
                 windowStatus = 0
                 windowMargin = 10
-//                maximizeBtn.btnIconSource = '../../images/svg_images/maximize_icon.svg'
+                maximizeBtn.btnIconSource = '../../images/svg_images/maximize_icon.svg'
             }
         }
 
@@ -41,7 +44,6 @@ Window {
                 mainWindow.showNormal()
                 windowStatus = 0
                 windowMargin = 10
-
             }
         }
 
@@ -63,7 +65,7 @@ Window {
         anchors.rightMargin: windowMargin
         anchors.leftMargin: windowMargin
         anchors.bottomMargin: windowMargin
-        anchors.topMargin: windowMargin
+        anchors.topMargin: windowMargin   
         z: 1
 
         Rectangle {
@@ -82,7 +84,7 @@ Window {
                 color: '#1c1d20'
                 anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.top: parent.top
+                anchors.top: parent.top    
 
                 ToggleButton {
                     id: toggleBtn
@@ -99,7 +101,7 @@ Window {
                 Rectangle {
                     id: titleBar
                     height: 32
-                    color: '#2a2d31'
+                    color: barColor
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
@@ -165,7 +167,10 @@ Window {
                             anchors.left: minimizeBtn.right
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
+
+                            colorMouseOver: "#54402323"
                             btnIconSource: '../../images/svg_images/maximize_icon.svg'
+
                             onClicked: internal.maximizeRestore()
                         }
 
@@ -175,7 +180,10 @@ Window {
                             anchors.left: maximizeBtn.right
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
+
                             btnIconSource: '../../images/svg_images/close_icon.svg'
+                            colorMouseOver: '#fe2c54'
+
                             onClicked: mainWindow.close()
                         }
                     }
@@ -196,7 +204,7 @@ Window {
 
                     Label {
                         id: lebelLeft
-                        color: '#5f6a82'
+                        color: textColor
                         text: qsTr('Tool Description')
                         anchors.fill: parent
                         horizontalAlignment: Text.AlignHCenter
@@ -208,8 +216,8 @@ Window {
 
                     Label {
                         id: labelRight
-                        color: '#5f6a82'
-                        text: qsTr('| Home')
+                        color: textColor
+                        text: qsTr('| Home ')
                         anchors.left: lebelLeft.right
                         anchors.right: parent.right
                         anchors.top: parent.top
@@ -242,7 +250,7 @@ Window {
 
                     opacity: 1
                     visible: true
-                    color: '#2a2d31'
+                    color: barColor
                     layer.enabled: true
 
                     anchors.left: parent.left
@@ -274,7 +282,10 @@ Window {
 
                     Column {
                         id: columnMenu
-                        anchors.fill: parent
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
                         anchors.bottomMargin: 24
                         clip: true
 
@@ -331,7 +342,7 @@ Window {
                     id: rectangle
                     x: 203
                     y: 324
-                    color: '#282c23'
+                    color: '#282c34'
                     anchors.left: leftMenu.right
                     anchors.right: parent.right
                     anchors.top: contentPages.bottom
@@ -342,7 +353,7 @@ Window {
                         id: labelBot
                         x: -60
                         y: -575
-                        color: '#5f6a82'
+                        color: textColor
                         text: qsTr('Footer')
                         anchors.fill: parent
                         horizontalAlignment: Text.AlignLeft
@@ -356,11 +367,11 @@ Window {
 
         DropShadow {
             anchors.fill: parent
-            horizontalOffset: 5
-            verticalOffset: 5
-            radius: 5
-            samples: 16
-            color: 'black'
+            horizontalOffset: 1
+            verticalOffset: 3
+            radius: 8
+            samples: (1 + radius)*2
+            color: '#80000000'
             source: parent
             z: 0
         }

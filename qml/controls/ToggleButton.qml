@@ -5,7 +5,7 @@ Button {
     id: btnToggle
 
     property url btnIconSource
-    property color colorDefault: '#55aaff'
+    property color colorDefault: "#af55aaff"
     property color colorMouseOver: '#cccccc'
     property color colorPressed: '#333333'
     width: 50
@@ -22,10 +22,9 @@ Button {
             }
     }
 
-    background: Rectangle{
+    background: Rectangle {
         id: rectangle
         color: internal.dynamicColor
-        radius: 8
 
         Image {
             id: iconBtn

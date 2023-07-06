@@ -12,7 +12,7 @@ Button {
     property color colorMouseOver: '#cccccc'
     property color colorPressed: '#333333'
     property color activeMenuColorLeft: '#55aaff'
-    property color activeMenuColorRight: '#2c313c'
+    property color activeMenuColorRight: '#55aaff'
 
     property int iconWidth: 18
     property int iconHeight: 18
@@ -29,6 +29,8 @@ Button {
             }
     }
 
+    width: 250
+    height: 40
     implicitWidth: 250
     implicitHeight: 40
 
@@ -79,12 +81,12 @@ Button {
             antialiasing: true
         }
 
-        ColorOverlay {
-            anchors.fill: iconBtn
-            source: iconBtn
-            color: 'white'
-            antialiasing: true
-        }
+//        ColorOverlay {
+//            anchors.fill: iconBtn
+//            source: iconBtn
+//            color: 'white'
+//            antialiasing: true
+//        }
 
         Text {
             color: 'white'

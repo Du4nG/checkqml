@@ -5,11 +5,9 @@ import Qt5Compat.GraphicalEffects
 Button {
     id: btnTopBar
     property url btnIconSource
-    property color colorDefault: '#00a1f1'
-    property color colorMouseOver: '#cccccc'
+    property color colorDefault: '#2a2d31'
+    property color colorMouseOver
     property color colorPressed: '#333333'
-    width: 50
-    height: 50
 
     QtObject {
         id: internal
@@ -22,28 +20,28 @@ Button {
             }
     }
 
+    width: 50
+    height: 50
+
     background: Rectangle{
-        id: rectangle
-        color: 'transparent'
-        radius: 10
+        id: bgBtn
+        color: internal.dynamicColor
 
         Image {
             id: iconBtn
             source: btnIconSource
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            height: 25
-            width: 25
-            fillMode: Image.PreserveAspectFit
+            height: 16
+            width: 16
             visible: false
+            fillMode: Image.PreserveAspectFit
         }
 
-//        ColorOverlay {
-//            anchors.fill: iconBtn
-//            source: iconBtn
-//            color: 'white'
-//            antialiasing: true
-//        }
+        ColorOverlay{
+            anchors.fill: iconBtn
+            source: iconBtn
+            color: '#808080'
+        }
     }
 }
-
