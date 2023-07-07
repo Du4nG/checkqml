@@ -14,6 +14,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            clip: true
             font.pointSize: 20
             anchors.horizontalCenter: parent.horizontalCenter
         }

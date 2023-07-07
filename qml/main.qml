@@ -302,8 +302,13 @@ Window {
                             id: btnHome
                             width: leftMenu.width
                             text: "Home"
-
                             btnIconSource: '../../images/svg_images/home_icon.svg'
+//                            isActiveMenu: true // default
+                            onClicked: {
+                                btnHome.isActiveMenu = true
+                                btnSettings.isActiveMenu = false
+                                stackView.push(Qt.resolvedUrl("pages/homePage.qml"))
+                            }
                         }
 
                         LeftMenuButton {
@@ -327,6 +332,11 @@ Window {
                         text: qsTr('Settings')
                         anchors.bottom: columnMenu.bottom
                         btnIconSource: '../../images/svg_images/settings_icon.svg'
+                        onClicked: {
+                            btnHome.isActiveMenu = false
+                            btnSettings.isActiveMenu = true
+                            stackView.push(Qt.resolvedUrl('pages/SettingsPage.qml'))
+                        }
                     }
                 }
 
@@ -429,13 +439,13 @@ Window {
             anchors.topMargin: -10
             anchors.left: parent.left
             anchors.right: parent.right
-            cursorShape: Qt.SizeHorCursor
+            cursorShape: Qt.SizeVerCursor
 
             DragHandler {
                 target: null
                 onActiveChanged:
                     if (active) {
-                        mainWindow.startSystemResize(Qt.LeftEdge)
+                        mainWindow.startSystemResize(Qt.TopEdge)
                     }
             }
         }

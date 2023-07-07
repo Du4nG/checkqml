@@ -13,11 +13,14 @@ Button {
     property color colorMouseOver: '#333333'
     property color colorPressed: '#66808080'
     property color activeMenuColorLeft: '#55aaff'
-    property color activeMenuColorRight: '#55aaff'
+    property color currentSelection: '#444444'
+
+
 
     property int iconWidth: 18
     property int iconHeight: 18
     property bool isActive: true
+    property bool isActiveMenu: false
 
     QtObject {
         id: internal
@@ -43,7 +46,18 @@ Button {
                 top: parent.top
                 bottom: parent.bottom
             }
+            Rectangle {
+                anchors{
+                    top: parent.top
+                    right: parent.right
+                    bottom: parent.bottom
+                    left: parent.left
+                }
 
+                color: btnLeftMenu.currentSelection
+                width: 5
+                visible: isActiveMenu
+            }
             Rectangle {
                 anchors{
                     top: parent.top
@@ -53,19 +67,9 @@ Button {
 
                 color: btnLeftMenu.activeMenuColorLeft
                 width: 3
-                visible: btnLeftMenu.isActive
+                visible: isActiveMenu
             }
-            Rectangle {
-                anchors{
-                    top: parent.top
-                    right: parent.right
-                    bottom: parent.bottom
-                }
 
-                color: btnLeftMenu.activeMenuColorRight
-                width: 5
-                visible: btnLeftMenu.isActive
-            }
         }
 
 
