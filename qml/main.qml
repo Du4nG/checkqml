@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
+import QtQuick.Dialogs
 import Qt5Compat.GraphicalEffects
 
 import 'controls'
@@ -24,6 +25,7 @@ Window {
     property int windowStatus: 0
     property int windowMargin: 10
 
+    property alias actualPage: stackView.currentItem
 
     QtObject {
         id: internal
@@ -301,21 +303,36 @@ Window {
                         LeftMenuButton {
                             id: btnHome
                             width: leftMenu.width
-                            text: "Home"
+                            text: 'Home'
                             btnIconSource: '../../images/svg_images/home_icon.svg'
-//                            isActiveMenu: true // default
+                            isActiveMenu: true // default
                             onClicked: {
                                 btnHome.isActiveMenu = true
                                 btnSettings.isActiveMenu = false
-                                stackView.push(Qt.resolvedUrl("pages/homePage.qml"))
+                                stackView.push(Qt.resolvedUrl('pages/homePage.qml'))
                             }
                         }
 
                         LeftMenuButton {
                             id: btnOpen
                             width: leftMenu.width
-                            text: "Open"
+                            text: 'Open'
                             btnIconSource: '../../images/svg_images/open_icon.svg'
+
+                            onPressed: {
+                                fileOpen.open()
+                            }
+
+                            FileDialog {
+                                id: fileOpen
+                                title: 'Choose file'
+//                                folder: shortcuts.home
+//                                selectMultiple: false
+                                nameFilters: ['(*.txt)']
+                                onAccepted: {
+                                    backend.openFile(fileOpen.fileUrl)
+                                }
+                            }
                         }
 
                         LeftMenuButton {
@@ -323,6 +340,21 @@ Window {
                             width: leftMenu.width
                             text: qsTr('Save')
                             btnIconSource: '../../images/svg_images/save_icon.svg'
+
+                            onPressed: {
+                                fileSave.open()
+                            }
+
+                            FileDialog {
+                                id: fileSave
+                                title: 'Save'
+//                                folder: shortcuts.home
+//                                selectExisting: false
+                                onAccepted: {
+                                    backend.getTextField(actualPage.getText)
+                                    backend.writeFile(fileSave.fileUrl)
+                                }
+                            }
                         }
                     }
 
@@ -335,7 +367,7 @@ Window {
                         onClicked: {
                             btnHome.isActiveMenu = false
                             btnSettings.isActiveMenu = true
-                            stackView.push(Qt.resolvedUrl('pages/SettingsPage.qml'))
+                            stackView.push(Qt.resolvedUrl('pages/settingsPage.qml'))
                         }
                     }
                 }
@@ -356,7 +388,7 @@ Window {
                     StackView {
                         id: stackView
                         anchors.fill: parent
-                        initialItem: Qt.resolvedUrl('pages/homePage.qml')
+                        initialItem: 'pages/homePage.qml'
                     }
                 }
 
@@ -424,12 +456,11 @@ Window {
                             onActiveChanged:
                                 if (active) {
                                     mainWindow.startSystemResize(Qt.LeftEdge | Qt.BottomEdge)
-                                }
+                            }
                         }
                     }
                 }
             }
-
         }
 
         MouseArea {
@@ -513,6 +544,14 @@ Window {
             color: '#80000000'
             source: parent
             z: 0
+        }
+    }
+
+    Connections {
+        target: backend
+
+        function onReadText(text){
+            actualPage.setText = text
         }
     }
 }

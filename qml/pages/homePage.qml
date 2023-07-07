@@ -20,16 +20,23 @@ Item {
             y: 145
             width: 337
             height: 41
+            Keys.onEnterPressed: {
+                backend.showHideRectangle(switchHome.checked)
+            }
             placeholderText: qsTr("Text Field")
         }
 
         Switch {
-            id: switch1
+            id: switchHome
             x: 519
+            checked: true
             width: 53
             height: 28
             text: qsTr('Switch')
             anchors.verticalCenter: parent.verticalCenter
+            onToggled: {
+                backend.showHideRectangle(switchHome.checked)
+            }
         }
 
         Button {
@@ -54,16 +61,32 @@ Item {
             color: 'red'
         }
 
+        Label {
+            id: labelDate
+            x: 121
+            y: 211
+            width: 310
+            height: 40
+            text: qsTr('Date:')
+            color: 'red'
+        }
 
         Connections {
             target: backend
 
+            // đặt theo tên Signal, setName => onSetName
             function onSetName(name){
                 labelTextName.text = name
             }
+
+            function onPrintTime(time){
+                labelDate.text = time
+            }
+
+            function onIsVisible(isVisible){
+                rectangle.visible = isVisible
+            }
         }
-
-
     }
 }
 
