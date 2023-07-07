@@ -9,6 +9,9 @@ Window {
     id: mainWindow
     width: 1080
     height: 720
+    minimumWidth: 540
+    minimumHeight: 360
+
     visible: true
     color: 'transparent'
 
@@ -17,23 +20,39 @@ Window {
     flags: Qt.Window | Qt.FramelessWindowHint
 
     property color textColor: '#5f6a82'
-    property color barColor: '#2a2d31'
+    property color barColor: '#1d1d1d'
     property int windowStatus: 0
     property int windowMargin: 10
 
+
     QtObject {
         id: internal
+
+        function resetResizeBorders(){
+            resizeLeft.visible = true
+            resizeRight.visible = true
+            resizeBottom.visible = true
+            resizable.visible = true
+        }
+
         function maximizeRestore(){
+
+            // window is maximized
             if (windowStatus == 0){
                 mainWindow.showMaximized()
                 windowStatus = 1
                 windowMargin = 0
+                resizeLeft.visible = false
+                resizeRight.visible = false
+                resizeBottom.visible = false
+                resizable.visible = false
                 maximizeBtn.btnIconSource = '../../images/svg_images/restore_icon.svg'
             }
             else{
                 mainWindow.showNormal()
                 windowStatus = 0
                 windowMargin = 10
+                internal.resetResizeBorders()
                 maximizeBtn.btnIconSource = '../../images/svg_images/maximize_icon.svg'
             }
         }
@@ -43,12 +62,15 @@ Window {
                 mainWindow.showNormal()
                 windowStatus = 0
                 windowMargin = 10
+                internal.resetResizeBorders()
             }
         }
 
         function restoreMargins(){
             windowStatus = 0
             windowMargin = 10
+            internal.resetResizeBorders()
+            maximizeBtn.btnIconSource = '../../images/svg_images/maximize_icon.svg'
         }
     }
 
@@ -56,25 +78,23 @@ Window {
         id: bg
         color: '#002c313c'
         border.color: '#74383e4c'
-        border.width: 10
+        border.width: 1
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.rightMargin: windowMargin
-        anchors.leftMargin: windowMargin
-        anchors.bottomMargin: windowMargin
-        anchors.topMargin: windowMargin
-        z: 1
+        anchors.rightMargin: 10
+        anchors.leftMargin: 10
+        anchors.bottomMargin: 10
+        anchors.topMargin: 10
 
         Rectangle {
             id: appContainer
             opacity: 1
             visible: true
-            color: '#002c313c'
+            color: 'transparent'
             anchors.fill: parent
             z: 1
-            transformOrigin: Item.Center
 
             Rectangle {
                 id: topBar
@@ -83,7 +103,7 @@ Window {
                 color: barColor
                 anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.top: parent.top    
+                anchors.top: parent.top
 
                 ToggleButton {
                     id: toggleBtn
@@ -93,7 +113,6 @@ Window {
                     anchors.top: parent.top
                     anchors.leftMargin: 0
                     anchors.topMargin: 0
-                    btnIconSource: '../../images/svg_images/menu_icon.svg'
                     onHoveredChanged: animationMenu.running = true
                 }
 
@@ -150,11 +169,7 @@ Window {
                         TopBarButton {
                             id: minimizeBtn
                             width: 43
-                            anchors.left: parent.left
-                            anchors.top: parent.top
-                            anchors.bottom: parent.bottom
-
-                            colorMouseOver: '#66808080'
+                            colorMouseOver: '#333333'
                             btnIconSource: '../../images/svg_images/minimize_icon.svg'
 
                             onClicked: {
@@ -166,11 +181,7 @@ Window {
                         TopBarButton {
                             id: maximizeBtn
                             width: 43
-                            anchors.left: minimizeBtn.right
-                            anchors.top: parent.top
-                            anchors.bottom: parent.bottom
-
-                            colorMouseOver: '#66808080'
+                            colorMouseOver: '#333333'
                             btnIconSource: '../../images/svg_images/maximize_icon.svg'
 
                             onClicked: internal.maximizeRestore()
@@ -179,10 +190,6 @@ Window {
                         TopBarButton {
                             id: closeBtn
                             width: 43
-                            anchors.left: maximizeBtn.right
-                            anchors.top: parent.top
-                            anchors.bottom: parent.bottom
-
                             colorMouseOver: '#c5083e'
                             btnIconSource: '../../images/svg_images/close_icon.svg'
 
@@ -288,21 +295,21 @@ Window {
                         anchors.right: parent.right
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 30
+                        anchors.bottomMargin: 25
                         clip: true
 
                         LeftMenuButton {
                             id: btnHome
                             width: leftMenu.width
-                            text: qsTr('Home')
+                            text: "Home"
+
                             btnIconSource: '../../images/svg_images/home_icon.svg'
                         }
 
                         LeftMenuButton {
                             id: btnOpen
                             width: leftMenu.width
-                            text: qsTr('Open')
-                            anchors.top: btnHome.bottom
+                            text: "Open"
                             btnIconSource: '../../images/svg_images/open_icon.svg'
                         }
 
@@ -310,43 +317,41 @@ Window {
                             id: btnSave
                             width: leftMenu.width
                             text: qsTr('Save')
-                            anchors.top: btnOpen.bottom
                             btnIconSource: '../../images/svg_images/save_icon.svg'
                         }
                     }
 
                     LeftMenuButton {
                         id: btnSettings
-                        x: 0
-                        y: 555
                         width: leftMenu.width
                         text: qsTr('Settings')
                         anchors.bottom: columnMenu.bottom
-                        anchors.bottomMargin: -5
                         btnIconSource: '../../images/svg_images/settings_icon.svg'
-                        anchors.topMargin: 0
                     }
-
-
                 }
 
                 Rectangle {
                     id: contentPages
-                    color: '#2c313c'
+                    color: 'transparent'
                     anchors.left: leftMenu.right
                     anchors.right: parent.right
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
+                    clip: true
                     anchors.rightMargin: 0
                     anchors.leftMargin: 0
                     anchors.bottomMargin: 25
                     anchors.topMargin: 0
+
+                    StackView {
+                        id: stackView
+                        anchors.fill: parent
+                        initialItem: Qt.resolvedUrl('pages/homePage.qml')
+                    }
                 }
 
                 Rectangle {
                     id: rectangle
-                    x: 203
-                    y: 324
                     color: '#282c34'
                     anchors.left: leftMenu.right
                     anchors.right: parent.right
@@ -354,20 +359,139 @@ Window {
                     anchors.bottom: parent.bottom
 
 
-                    Label {
-                        id: labelBot
-                        x: -60
-                        y: -575
-                        color: textColor
-                        text: qsTr('Footer')
-                        anchors.fill: parent
-                        horizontalAlignment: Text.AlignLeft
-                        verticalAlignment: Text.AlignVCenter
-                        font.pointSize: 12
+                    // icon resizable cần nằm ở trên nên để trong đây
+                    MouseArea {
+                        id: resizeRightBottom
+                        x: 965
+                        y: 0
+                        width: 25
+                        height: 25
+
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                        anchors.rightMargin: 0
+                        anchors.bottomMargin: 0
+                        cursorShape: Qt.SizeFDiagCursor
+
+                        DragHandler {
+                            target: null
+                            onActiveChanged:
+                                if (active) {
+                                    mainWindow.startSystemResize(Qt.RightEdge | Qt.BottomEdge)
+                                }
+                        }
+
+                        Image {
+                            id: resizable
+                            anchors.fill: parent
+                            x: 985
+                            y: 0
+                            width: 25
+                            height: 25
+                            opacity: 0.3
+                            source: '../images/svg_images/resize_icon.svg'
+                            anchors.leftMargin: 0
+                            anchors.topMargin: 0
+                            anchors.rightMargin: -6
+                            anchors.bottomMargin: -6
+                            fillMode: Image.PreserveAspectFit
+                        }
+                    }
+
+                    MouseArea {
+                        id: resizeLeftBottom
+                        width: 35
+                        height: 35
+                        anchors.left: parent.left
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: -10
+                        anchors.leftMargin: -80
+
+                        cursorShape: Qt.SizeBDiagCursor
+
+                        DragHandler {
+                            target: null
+                            onActiveChanged:
+                                if (active) {
+                                    mainWindow.startSystemResize(Qt.LeftEdge | Qt.BottomEdge)
+                                }
+                        }
                     }
                 }
             }
 
+        }
+
+        MouseArea {
+            id: resizeTop
+            height: 20
+            anchors.top: parent.top
+            anchors.topMargin: -10
+            anchors.left: parent.left
+            anchors.right: parent.right
+            cursorShape: Qt.SizeHorCursor
+
+            DragHandler {
+                target: null
+                onActiveChanged:
+                    if (active) {
+                        mainWindow.startSystemResize(Qt.LeftEdge)
+                    }
+            }
+        }
+
+        MouseArea {
+            id: resizeLeft
+            width: 20
+            anchors.left: parent.left
+            anchors.leftMargin: -10
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            cursorShape: Qt.SizeHorCursor
+
+            DragHandler {
+                target: null
+                onActiveChanged:
+                    if (active) {
+                        mainWindow.startSystemResize(Qt.LeftEdge)
+                    }
+            }
+        }
+
+        MouseArea {
+            id: resizeBottom
+            height: 20
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: -10
+            cursorShape: Qt.SizeVerCursor
+
+            DragHandler {
+                target: null
+                onActiveChanged:
+                    if (active) {
+                        mainWindow.startSystemResize(Qt.BottomEdge)
+                    }
+            }
+        }
+
+        MouseArea {
+            id: resizeRight
+            width: 20
+            anchors.right: parent.right
+            anchors.rightMargin: -10
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            cursorShape: Qt.SizeHorCursor
+
+            DragHandler {
+                target: null
+                onActiveChanged:
+                    if (active) {
+                        mainWindow.startSystemResize(Qt.RightEdge)
+                    }
+            }
         }
 
         DropShadow {

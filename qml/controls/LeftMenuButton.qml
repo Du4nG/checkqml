@@ -1,5 +1,6 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
 import Qt5Compat.GraphicalEffects
 
 Button {
@@ -8,9 +9,9 @@ Button {
 
     property url btnIconSource
 
-    property color colorDefault: "#5f6a82"
-    property color colorMouseOver: '#cccccc'
-    property color colorPressed: '#333333'
+    property color colorDefault: 'transparent'
+    property color colorMouseOver: '#333333'
+    property color colorPressed: '#66808080'
     property color activeMenuColorLeft: '#55aaff'
     property color activeMenuColorRight: '#55aaff'
 
@@ -38,6 +39,10 @@ Button {
         Rectangle {
             id: bgBtn
             color: internal.dynamicColor
+            anchors{
+                top: parent.top
+                bottom: parent.bottom
+            }
 
             Rectangle {
                 anchors{
