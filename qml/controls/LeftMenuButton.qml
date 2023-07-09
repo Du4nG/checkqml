@@ -12,6 +12,7 @@ Button {
     property color colorDefault: 'transparent'
     property color colorMouseOver: '#333333'
     property color colorPressed: '#66808080'
+
     property color activeMenuColorLeft: '#55aaff'
     property color currentSelection: '#444444'
 

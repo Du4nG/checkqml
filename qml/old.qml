@@ -20,8 +20,9 @@ Window {
 
     flags: Qt.Window | Qt.FramelessWindowHint
 
-    property color textColor: '#5f6a82'
-    property color barColor: '#1d1d1d'
+    property color textColor: '#EEEEEE'
+    property color barColor:  '#222831'//'#1d1d1d'
+    property color contentColor:  '#393E46'//'#1d1d1d'
     property int windowStatus: 0
     property int windowMargin: 10
 
@@ -153,12 +154,12 @@ Window {
 
                     Label {
                         id: label
-                        color: '#c3cbdd'
-                        text: qsTr('QML')
+                        color: textColor
+                        text: 'QML'
                         anchors.fill: parent
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
-                        font.pointSize: 20
+                        font.pointSize: 9
                         anchors.leftMargin: 50
                     }
 
@@ -245,7 +246,7 @@ Window {
                 id: content
                 opacity: 1
                 visible: true
-                color: '#2c313c'
+                color: contentColor
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: topBar.bottom
@@ -258,18 +259,13 @@ Window {
                 Rectangle {
                     id: leftMenu
                     width: 70
-
-                    opacity: 1
-                    visible: true
+//                    visible: true
                     color: barColor
                     layer.enabled: true
 
                     anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    anchors.topMargin: 0
-                    anchors.bottomMargin: 0
-                    anchors.leftMargin: 0
 
                     PropertyAnimation {
                         id: animationMenu

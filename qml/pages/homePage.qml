@@ -5,7 +5,7 @@ Item {
     clip: true
     Rectangle {
         id: rectangle
-        color: '#222222'
+        color: '#00ADB5'
         anchors.fill: parent
 
         anchors.topMargin: 50
@@ -21,7 +21,10 @@ Item {
             width: 337
             height: 41
             Keys.onEnterPressed: {
-                backend.showHideRectangle(switchHome.checked)
+                backend.welcomeText(textField.text)
+            }
+            Keys.onReturnPressed: {
+                backend.welcomeText(textField.text)
             }
             placeholderText: qsTr("Text Field")
         }
@@ -84,10 +87,8 @@ Item {
             }
 
             function onIsVisible(isVisible){
-                rectangle.visible = isVisible
+                textField.visible = isVisible
             }
         }
     }
 }
-
-
